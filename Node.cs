@@ -12,9 +12,14 @@ public class Node : MonoBehaviour
     public Node down;
     public Block Block;
 
-    private int _height = GameManager.Instance.Height;
-    private int _width = GameManager.Instance.Width;
+    private int _height ;
+    private int _width ;
 
+    private void Awake()
+    {
+        _height = GameManager.Instance.Height;
+        _width = GameManager.Instance.Width;
+    }
 
     private void OnEnable()
     {
@@ -30,18 +35,20 @@ public class Node : MonoBehaviour
     {
         switch (key_board)
         {
-            case "w" :
+            case "W" :
+                Debug.Log("W");
                 if (up != null) return;
-                
-                SlideUp(this);
+                Node currentNode = this;
+                Debug.Log(currentNode);
+                SlideUp(currentNode);
                 break;
-            case "s":
+            case "S":
                 if (down != null) return;
                 break;
-            case "a":
+            case "A":
                 if (left != null) return;
                 break;
-            case "d":
+            case "D":
                 if (right != null) return;
                 break;
             default : 
@@ -51,8 +58,57 @@ public class Node : MonoBehaviour
 
     private void SlideUp(Node currentNode)
     {
-        Debug.Log(currentNode.gameObject);
-        if (currentNode == null) return;
+        
+        if (currentNode.down == null) return;
+
+        if (currentNode.Block != null)
+        {
+            Node nextNode = currentNode.down;
+            while (nextNode.down != null || nextNode.Block == null)
+            {
+
+                nextNode = nextNode.down;
+                Debug.Log(nextNode);
+            }
+            if (nextNode.Block != null)
+            {
+                if (currentNode.Block.value == nextNode.Block.value)
+                {
+                    Debug.Log("Doubled");
+                    nextNode.Block.transform.parent = currentNode.transform;
+                    currentNode.Block = nextNode.Block;
+                    nextNode.Block = null;
+                }
+                else
+                {
+                    Debug.Log("!Doubled");
+                    nextNode.Block.transform.parent = currentNode.down.transform;
+                    currentNode.down.Block = nextNode.Block;
+                    nextNode.Block = null;
+                }
+            }
+        }
+        else
+        {
+            Node nextNode = currentNode.down;
+            while (nextNode.down != null && nextNode.Block == null)
+            {
+                nextNode = nextNode.down;
+                Debug.Log(nextNode);
+            }
+            if (nextNode.Block != null)
+            {
+                //nextNode.Block.transform.parent = currentNode.transform;
+                nextNode.Block.transform.SetParent(currentNode.transform, false);
+                currentNode.Block = nextNode.Block;
+                nextNode.Block = null;
+                SlideUp(currentNode);
+                Debug.Log("Slide to Empty");
+            }
+        }
+       
+
+        if (currentNode.down == null) return;
         SlideUp(currentNode.down);
     }
 
