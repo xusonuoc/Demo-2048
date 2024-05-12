@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Android.Gradle;
@@ -11,8 +12,8 @@ public class GameManager : MonoBehaviour
 
     public static Action<string> slide;
 
-    [SerializeField] public int Height = 4;
-    [SerializeField] public int Width = 4;
+    public int Height = 4;
+    public int Width = 4;
 
     [SerializeField] private Node _node;
     [SerializeField] private Transform[] _nodes;
@@ -22,7 +23,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private Block _block;
     [SerializeField] private Transform[] _blocks;
-    private List<Block> _blocksList;
+    [SerializeField]private List<Block> _blocksList;
     private void Awake()
     {
         if (GameManager.instance != null) Debug.LogError("Only 1 singleton availible");
@@ -33,7 +34,7 @@ public class GameManager : MonoBehaviour
     {
         Initialized();
 
-        Node[,] grid = new Node[Width, Height];
+        //Node[,] grid = new Node[Width, Height];
 
         //// Khởi tạo grid và gắn các Node bên cạnh cho mỗi Node
         //for (int x = 0; x < Width; x++)
@@ -60,22 +61,22 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.W)) {
             slide("W");
-            Debug.Log(Input.GetKeyUp(KeyCode.W));
+            
         }
         if (Input.GetKeyUp(KeyCode.A))
         {
             slide("A");
-            Debug.Log(Input.GetKeyUp(KeyCode.A));
+            
         }
         if (Input.GetKeyUp(KeyCode.S))
         {
             slide("S");
-            Debug.Log(Input.GetKeyUp(KeyCode.S));
+            
         }
         if (Input.GetKeyUp(KeyCode.D))
         {
             slide("D");
-            Debug.Log(Input.GetKeyUp(KeyCode.D));
+            
         }
     }
     private void Initialized()
@@ -98,7 +99,7 @@ public class GameManager : MonoBehaviour
 
         var center = new Vector2((float)Height / 2 - 0.5f ,(float)Width / 2 - 0.5f) ;
 
-        var board = Instantiate(_board, center, Quaternion.identity);
+        var _ = Instantiate(_board, center, Quaternion.identity);
 
         _blocks = new Transform[_nodesList.Count];
 
@@ -111,9 +112,6 @@ public class GameManager : MonoBehaviour
 
             }
         }
-
-        Debug.Log(_nodesList[1]);
-
     }
 
     private void SpawnBlock()
@@ -128,28 +126,39 @@ public class GameManager : MonoBehaviour
        
         if (_blocks[intPosSpawn] != null)
         {
-            Debug.Log(_blocks[intPosSpawn]);
+            // Debug.Log(_blocks[intPosSpawn]);
             SpawnBlock();
             return;
         }
 
         float chance = UnityEngine.Random.Range(0f, 1f);
-        if (chance < .2)
+        if (chance < .8)
         {
-
+            Debug.Log("Gắn block");
             var block = Instantiate(_block, _nodes[intPosSpawn]);
 
             // Gắn block làm con của Node để nó nằm bên trong Node
-            block.transform.parent = _nodesList[intPosSpawn].transform;
-
+            // block.transform.parent = _nodesList[intPosSpawn].transform;
             _blocks[intPosSpawn] = block.transform;
+            Block tempBlockComp = block.GetComponent<Block>();
+            _nodes[intPosSpawn].GetComponent<Node>().Block = tempBlockComp;
+            tempBlockComp.UpdateValue(4);
         }
         else
         {
-            
-            var block = Instantiate(_block, _nodes[intPosSpawn]);
-            _blocks[intPosSpawn] = _nodes[intPosSpawn];
+            //Debug.Log("high");   
+            //var _ = Instantiate(_block, _nodes[intPosSpawn]);
+            //_blocks[intPosSpawn] = _nodes[intPosSpawn];
 
+            Debug.Log("Gắn block 2");
+            var block = Instantiate(_block, _nodes[intPosSpawn]);
+
+            // Gắn block làm con của Node để nó nằm bên trong Node
+            // block.transform.parent = _nodesList[intPosSpawn].transform;
+            _blocks[intPosSpawn] = block.transform;
+            Block tempBlockComp = block.GetComponent<Block>();
+            _nodes[intPosSpawn].GetComponent<Node>().Block = tempBlockComp;
+            tempBlockComp.UpdateValue(2);
         }
 
     }
