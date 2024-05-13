@@ -1,3 +1,4 @@
+
 using NUnit.Framework.Interfaces;
 using System;
 using System.Collections;
@@ -77,7 +78,7 @@ public class Node : MonoBehaviour
             {
                 if (currentNode.Block.value == nextNode.Block.value)
                 {
-                    Debug.Log("Doubled");
+                    nextNode.Block.Double();
                     nextNode.Block.transform.parent = currentNode.transform;
                     currentNode.Block = nextNode.Block;
                     nextNode.Block = null;
@@ -133,7 +134,7 @@ public class Node : MonoBehaviour
             {
                 if (currentNode.Block.value == nextNode.Block.value)
                 {
-                    Debug.Log("Doubled");
+                    nextNode.Block.Double();
                     nextNode.Block.transform.SetParent(currentNode.transform, false);
                     currentNode.Block = nextNode.Block;
                     nextNode.Block = null;
@@ -189,7 +190,7 @@ public class Node : MonoBehaviour
             {
                 if (currentNode.Block.value == nextNode.Block.value)
                 {
-                    Debug.Log("Doubled");
+                    nextNode.Block.Double();
                     nextNode.Block.transform.SetParent(currentNode.transform, false);
                     currentNode.Block = nextNode.Block;
                     nextNode.Block = null;
@@ -245,7 +246,7 @@ public class Node : MonoBehaviour
             {
                 if (currentNode.Block.value == nextNode.Block.value)
                 {
-                    Debug.Log("Doubled");
+                    nextNode.Block.Double();
                     nextNode.Block.transform.SetParent(currentNode.transform, false);
                     currentNode.Block = nextNode.Block;
                     nextNode.Block = null;

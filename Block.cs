@@ -11,6 +11,7 @@ public class Block : MonoBehaviour
     [SerializeField] private int score;
     [SerializeField] private TextMeshPro valueDisplay;
     [SerializeField] private  int _speed = 2;
+    [SerializeField] private bool combine;
     void Start()
     {
         //// Lấy Text component từ đối tượng con
@@ -33,7 +34,21 @@ public class Block : MonoBehaviour
     {
         if(transform.localPosition != Vector3.zero) 
         {
+            combine = false;
             transform.localPosition = Vector3.MoveTowards(transform.localPosition, Vector3.zero, _speed*Time.deltaTime);
         }
+        else if (combine == false)
+        {
+            if(transform.parent.GetChild(0) != this.transform) 
+            {
+                Destroy(transform.parent.GetChild(0).gameObject);
+            }
+            combine = true;
+        }
+    }
+    public void Double()
+    {
+        value *= 2;
+        valueDisplay.text = value.ToString();
     }
 }

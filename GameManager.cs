@@ -142,7 +142,7 @@ public class GameManager : MonoBehaviour
             _blocks[intPosSpawn] = block.transform;
             Block tempBlockComp = block.GetComponent<Block>();
             _nodes[intPosSpawn].GetComponent<Node>().Block = tempBlockComp;
-            tempBlockComp.UpdateValue(4);
+            tempBlockComp.UpdateValue(2);
         }
         else
         {
@@ -158,7 +158,7 @@ public class GameManager : MonoBehaviour
             _blocks[intPosSpawn] = block.transform;
             Block tempBlockComp = block.GetComponent<Block>();
             _nodes[intPosSpawn].GetComponent<Node>().Block = tempBlockComp;
-            tempBlockComp.UpdateValue(2);
+            tempBlockComp.UpdateValue(4);
         }
 
     }
