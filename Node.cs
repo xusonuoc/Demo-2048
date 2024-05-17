@@ -1,4 +1,4 @@
-
+﻿
 using NUnit.Framework.Interfaces;
 using System;
 using System.Collections;
@@ -37,32 +37,39 @@ public class Node : MonoBehaviour
         Node currentNode = this;
         switch (key_board)
         {
-            case "W" :
-                Debug.Log("W");
+            case "W":
                 if (up != null) return;
-                Debug.Log(currentNode);
                 SlideUp(currentNode);
+
                 break;
             case "S":
                 if (down != null) return;
                 SlideDown(currentNode);
+
                 break;
             case "A":
                 if (left != null) return;
                 SlideLeft(currentNode);
+
                 break;
             case "D":
                 if (right != null) return;
                 SlideRight(currentNode);
+
                 break;
-            default : 
+            default:
                 break;
+        }
+        GameManager.Instance.count++;
+        if (GameManager.Instance.count == 4)
+        {
+            GameManager.Instance.SpawnBlock();
         }
     }
 
     private void SlideUp(Node currentNode)
     {
-        
+
         if (currentNode.down == null) return;
 
         if (currentNode.Block != null)
@@ -72,7 +79,7 @@ public class Node : MonoBehaviour
             {
 
                 nextNode = nextNode.down;
-                
+
             }
             if (nextNode.Block != null)
             {
@@ -85,8 +92,8 @@ public class Node : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("!Doubled");
-                    nextNode.Block.transform.parent = currentNode.transform;
+
+                    nextNode.Block.transform.parent = currentNode.down.transform;
                     currentNode.down.Block = nextNode.Block;
                     nextNode.Block = null;
                 }
@@ -98,7 +105,6 @@ public class Node : MonoBehaviour
             while (nextNode.down != null && nextNode.Block == null)
             {
                 nextNode = nextNode.down;
-                Debug.Log(nextNode);
             }
             if (nextNode.Block != null)
             {
@@ -110,7 +116,7 @@ public class Node : MonoBehaviour
                 Debug.Log("Slide to Empty");
             }
         }
-       
+
 
         if (currentNode.down == null) return;
         SlideUp(currentNode.down);
@@ -135,14 +141,14 @@ public class Node : MonoBehaviour
                 if (currentNode.Block.value == nextNode.Block.value)
                 {
                     nextNode.Block.Double();
-                    nextNode.Block.transform.SetParent(currentNode.transform, false);
+                    nextNode.Block.transform.parent = currentNode.transform;
                     currentNode.Block = nextNode.Block;
                     nextNode.Block = null;
                 }
                 else
                 {
-                    Debug.Log("!Doubled");
-                    nextNode.Block.transform.SetParent(currentNode.transform, false);
+
+                    nextNode.Block.transform.parent = currentNode.up.transform;
                     currentNode.up.Block = nextNode.Block;
                     nextNode.Block = null;
                 }
@@ -154,7 +160,6 @@ public class Node : MonoBehaviour
             while (nextNode.up != null && nextNode.Block == null)
             {
                 nextNode = nextNode.up;
-                Debug.Log(nextNode);
             }
             if (nextNode.Block != null)
             {
@@ -162,7 +167,7 @@ public class Node : MonoBehaviour
                 nextNode.Block.transform.parent = currentNode.transform;
                 currentNode.Block = nextNode.Block;
                 nextNode.Block = null;
-                SlideDown(currentNode);
+                SlideUp(currentNode);
                 Debug.Log("Slide to Empty");
             }
         }
@@ -171,7 +176,6 @@ public class Node : MonoBehaviour
         if (currentNode.up == null) return;
         SlideDown(currentNode.up);
     }
-
     private void SlideRight(Node currentNode)
     {
 
@@ -191,14 +195,13 @@ public class Node : MonoBehaviour
                 if (currentNode.Block.value == nextNode.Block.value)
                 {
                     nextNode.Block.Double();
-                    nextNode.Block.transform.SetParent(currentNode.transform, false);
+                    nextNode.Block.transform.parent = currentNode.transform;
                     currentNode.Block = nextNode.Block;
                     nextNode.Block = null;
                 }
                 else
                 {
-                    Debug.Log("!Doubled");
-                    nextNode.Block.transform.SetParent(currentNode.transform, false);
+                    nextNode.Block.transform.parent = currentNode.left.transform;
                     currentNode.left.Block = nextNode.Block;
                     nextNode.Block = null;
                 }
@@ -210,7 +213,7 @@ public class Node : MonoBehaviour
             while (nextNode.left != null && nextNode.Block == null)
             {
                 nextNode = nextNode.left;
-                Debug.Log(nextNode);
+                
             }
             if (nextNode.Block != null)
             {
@@ -224,7 +227,7 @@ public class Node : MonoBehaviour
         }
 
 
-        if (currentNode.up == null) return;
+        if (currentNode.left == null) return;
         SlideRight(currentNode.left);
     }
 
@@ -247,14 +250,15 @@ public class Node : MonoBehaviour
                 if (currentNode.Block.value == nextNode.Block.value)
                 {
                     nextNode.Block.Double();
-                    nextNode.Block.transform.SetParent(currentNode.transform, false);
+                    nextNode.Block.transform.parent = currentNode.transform;
                     currentNode.Block = nextNode.Block;
                     nextNode.Block = null;
                 }
                 else
                 {
-                    Debug.Log("!Doubled");
-                    nextNode.Block.transform.SetParent(currentNode.transform, false);
+                    
+                    nextNode.Block.transform.parent = currentNode.right.transform;
+                    //currentNode.right.Block = nextNode.Block;
                     currentNode.right.Block = nextNode.Block;
                     nextNode.Block = null;
                 }
@@ -266,7 +270,6 @@ public class Node : MonoBehaviour
             while (nextNode.right != null && nextNode.Block == null)
             {
                 nextNode = nextNode.right;
-                Debug.Log(nextNode);
             }
             if (nextNode.Block != null)
             {
@@ -280,7 +283,7 @@ public class Node : MonoBehaviour
         }
 
 
-        if (currentNode.up == null) return;
+        if (currentNode.right == null) return;
         SlideLeft(currentNode.right);
     }
 

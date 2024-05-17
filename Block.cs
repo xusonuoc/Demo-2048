@@ -50,5 +50,6 @@ public class Block : MonoBehaviour
     {
         value *= 2;
         valueDisplay.text = value.ToString();
+        Debug.Log("Combine value " +  value);
     }
 }

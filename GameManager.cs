@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Block _block;
     [SerializeField] private Transform[] _blocks;
     [SerializeField]private List<Block> _blocksList;
+
+    public int count;
     private void Awake()
     {
         if (GameManager.instance != null) Debug.LogError("Only 1 singleton availible");
@@ -50,33 +52,38 @@ public class GameManager : MonoBehaviour
         //    }
 
         //}
+        SpawnBlock();
+        SpawnBlock();
 
 
     }
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Space)){
-            SpawnBlock();
-        }
-
         if (Input.GetKeyUp(KeyCode.W)) {
             slide("W");
+            count = 0;
             
+
         }
         if (Input.GetKeyUp(KeyCode.A))
         {
             slide("A");
-            
+            count = 0;
+
+
         }
         if (Input.GetKeyUp(KeyCode.S))
         {
             slide("S");
-            
+            count = 0;
+
+
         }
         if (Input.GetKeyUp(KeyCode.D))
         {
             slide("D");
-            
+            count = 0;
+
         }
     }
     private void Initialized()
@@ -114,7 +121,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void SpawnBlock()
+    public void SpawnBlock()
     {
         
         int intPosSpawn = UnityEngine.Random.Range(0, Height * Width);
@@ -124,7 +131,8 @@ public class GameManager : MonoBehaviour
             return;
         }
        
-        if (_blocks[intPosSpawn] != null)
+        //if (_blocks[intPosSpawn] != null)
+        if (_nodesList[intPosSpawn].Block != null)
         {
             // Debug.Log(_blocks[intPosSpawn]);
             SpawnBlock();
